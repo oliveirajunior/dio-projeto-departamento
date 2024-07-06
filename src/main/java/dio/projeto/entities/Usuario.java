@@ -11,6 +11,8 @@ public class Usuario {
     private Long id;
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "departamento_id")
     private Departamento departamento;
 
     public Usuario() {
