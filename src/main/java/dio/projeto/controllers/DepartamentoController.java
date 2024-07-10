@@ -1,7 +1,8 @@
 package dio.projeto.controllers;
 
-import dio.projeto.entities.Departamento;
-import dio.projeto.repositories.DepartametnoRepository;
+import dio.projeto.dtos.DepartamentoDTO;
+import dio.projeto.services.DepartamentoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,32 +13,31 @@ import java.util.List;
 public class DepartamentoController {
 
     @Autowired
-    private DepartametnoRepository repository;
+    private DepartamentoService service;
 
     @GetMapping
-    public List<Departamento> listar() {
-        return repository.findAll();
+    public List<DepartamentoDTO> listar() {
+        return service.listar();
     }
 
     @GetMapping(value = "/{id}")
-    public Departamento filtrar(@PathVariable Long id) {
-        return repository.findById(id).get();
+    public DepartamentoDTO filtrar(@PathVariable Long id) {
+        return service.filtrar(id);
     }
 
     @PostMapping
-    public Departamento inserir(Departamento departamento) {
-        return repository.save(departamento);
+    public DepartamentoDTO inserir(@Valid @RequestBody DepartamentoDTO dto) {
+        return service.inserir(dto);
     }
 
     @DeleteMapping(value = "/{id}")
     public void excluir(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.excluir(id);
     }
 
     @PutMapping(value = "/{id}")
-    public Departamento alterar (@PathVariable Long id, @RequestBody Departamento departamento){
-        Departamento departamento1 = repository.findById(id).get();
-        departamento1.setNome(departamento.getNome());
-        return repository.save(departamento1);
+    public DepartamentoDTO alterar (@PathVariable Long id, @Valid @RequestBody DepartamentoDTO dto){
+        return service.alterar(id,dto);
     }
+
 }
